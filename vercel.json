@@ -1,5 +1,5 @@
 {   "version" : 2,
-    "name" : "Your Mailer",
+    "name" : "Recipe Keeper",
     "builds":[
         {
         "src":"./index.js",
