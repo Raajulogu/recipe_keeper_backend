@@ -10,9 +10,23 @@ router.get("/get-all",async (req,res)=>{
         let data = await Recipe.find()
         //Check data is Available
         if(!data) return res.status(400).json({message:"Data Unavailable"});
+        let temp=[];
+        let temprec=[];
+        let tempval
+        for(let i=0; i<data.length; i++){
+            if(!temp.includes(data[i].type.toLowerCase())){
+                tempval=data[i].type.toLowerCase();
+                temp.push(tempval)
+                temprec.push([]);
+            }
+            temprec[temp.indexOf(tempval)].push(data[i])
+        }
+        let rec={
+            temp,temprec,data
+        }
         res.status(200).json({
             message:"Successfully got Data",
-            data:data
+            data:rec
         })
     } catch (error) {
         console.log(error);
