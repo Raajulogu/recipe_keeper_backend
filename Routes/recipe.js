@@ -14,12 +14,13 @@ router.get("/get-all",async (req,res)=>{
         let temprec=[];
         let tempval
         for(let i=0; i<data.length; i++){
-            if(!temp.includes(data[i].type.toLowerCase())){
-                tempval=data[i].type.toLowerCase();
+            tempval=data[i].type.toLowerCase();
+            if(!temp.includes(tempval)){
                 temp.push(tempval)
                 temprec.push([]);
             }
             temprec[temp.indexOf(tempval)].push(data[i])
+            console.log(temp[i])
         }
         let rec={
             temp,temprec,data
@@ -145,15 +146,18 @@ router.put("/ratings", async (req, res) => {
         let id=req.body.data.id;
         let rating=req.body.data.rating
         let recipe = await Recipe.find({ _id:id })
-        let val=recipe[0].rating[0];
-        let count=recipe[0].rating[1];
+        let val=Number(recipe[0].rating[0]);
+        let count=Number(recipe[0].rating[1]);
         //Calculation for Overall Rating
         val*=count;
+        console.log(count)
         count++;
-        val+=rating
+        console.log(count)
+        val+=Number(rating)
         val=val/count;
         //Ratings and no of rating stored in newRating 
         let newRating=[val,count]
+        console.log(newRating)
         const addRating = await Recipe.findOneAndUpdate(
             { _id: id },
             { $set:{rating: newRating} }
