@@ -54,26 +54,6 @@ router.post("/login", async(req,res)=>{
     }
 })
 
-//Reset Password
-router.put("/reset",async(req,res)=>{
-    try {
-        //generate hashed password
-        let salt=await bcrypt.genSalt(10);
-        let hashedPassword=await bcrypt.hash(req.body.password,salt);
-        let user=await User.findOneAndUpdate(
-            {email:req.body.email},
-            {$set:{password:hashedPassword}},
-            {new:true}
-        );
-       
-        res.status(201).json({message:"Password Updated Successfully"});
-    } catch (error) {
-        console.log("Error",error)
-        res.status(500).json({message:"Internal Server Error"})
-    }
-})
-
-
 //Add a favourites
 router.put("/favourite",async(req,res)=>{
     try {
@@ -95,6 +75,7 @@ router.put("/favourite",async(req,res)=>{
     }
 })
 
+// Add the Favourite to the DB
 router.put("/get-favourites", async(req,res)=>{
     try {
         //Find user is available
@@ -109,6 +90,24 @@ router.put("/get-favourites", async(req,res)=>{
     }
 })
 
+//Reset Password
+router.put("/reset",async(req,res)=>{
+    try {
+        //generate hashed password
+        let salt=await bcrypt.genSalt(10);
+        let hashedPassword=await bcrypt.hash(req.body.password,salt);
+        let user=await User.findOneAndUpdate(
+            {email:req.body.email},
+            {$set:{password:hashedPassword}},
+            {new:true}
+        );
+       
+        res.status(201).json({message:"Password Updated Successfully"});
+    } catch (error) {
+        console.log("Error",error)
+        res.status(500).json({message:"Internal Server Error"})
+    }
+})
 
 
 export const userRouter = router;
