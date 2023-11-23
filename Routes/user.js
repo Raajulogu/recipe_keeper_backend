@@ -62,7 +62,9 @@ router.put("/favourite",async(req,res)=>{
         //find the User
         let val = await User.findOne({email:email});
         let fav=[...val.favourites]
-        fav.push(recipe);
+        if(!fav.includes(recipe)){
+            fav.push(recipe);
+        }
         //Adding the Favourite to the DB
         let addFavourit = await User.findOneAndUpdate(
             { email: email },
@@ -76,14 +78,14 @@ router.put("/favourite",async(req,res)=>{
 })
 
 // Add the Favourite to the DB
-router.put("/get-favourites", async(req,res)=>{
+router.get("/get-favourites", async(req,res)=>{
     try {
         //Find user is available
         let user = await User.findOne({email:req.body.email});
         if(!user) return res.status(400).json({message:"Invalid Credentials"})
 
         let data=user.favourites
-        res.status(201).json({message:"Logged in Successfully",data});
+        res.status(201).json({message:"Data get successfully Successfully",data});
     } catch (error) {
         console.log(error);
         res.status(500).json({message:"Internal server error"})
