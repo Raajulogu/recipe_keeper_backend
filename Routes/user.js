@@ -77,8 +77,8 @@ router.put("/favourite",async(req,res)=>{
     }
 })
 
-// Add the Favourite to the DB
-router.get("/get-favourites", async(req,res)=>{
+// Get a fvourites
+router.put("/get-favourites", async(req,res)=>{
     try {
         //Find user is available
         let user = await User.findOne({email:req.body.email});
